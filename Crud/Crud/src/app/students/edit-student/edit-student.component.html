@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Update Student: {{studentObject.Student_Name}}</h2>
+<div style="padding: 1rem;" >
+    <div >
+      <label for="StudentName">Name:</label>
+      <input type="text" name="StudentName" #StudentName = "ngModel" [(ngModel)]="studentObject.Student_Name" class="form-control"style="width: 16rem;" />
+    </div>
+    <br>
+    <div >
+      <label for="StudentSurname">Surname:</label>
+      <input type="text" name="StudentSurname"  [(ngModel)]="studentObject.Student_Surname" class="form-control" style="width: 16rem;" />
+    </div>
+    <!-- <div >
+      <label>Department:</label>
+      <select name="DepartmentID" class="form-control" id=""  [(ngModel)]="studentObject.Department_ID" (change)="selectDepartment($event.target.value)" style="width: 9rem;">
+        <option value="0">--Select--</option>
+        <option
+          value="{{ item.Department_ID }}"
+          *ngFor="let item of departmentList"
+        >
+          {{ item.Department_Descr }}
+        </option>
+      </select>
+    </div> -->
+  </div>
+  <mat-dialog-actions align="end">
+  <button class="btn btn-primary" (click)="cancel()">cancel</button>
+  <button class="btn btn-primary" style="margin-left: 0.5rem;" (click)="updateStudent()">update</button>
+</mat-dialog-actions>
+  
