@@ -1,18 +1,24 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { inject } from '@angular/core/testing';
-import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { Student } from 'src/app/services/student.model';
 
 @Component({
   selector: 'app-edit-student',
   templateUrl: './edit-student.component.html',
-  styleUrls: ['./edit-student.component.css']
+  styleUrls: ['./edit-student.component.css'],
 })
 export class EditStudentComponent implements OnInit {
-studentObject = new Student();
-  constructor(private dialog:MatDialog,
-    public dialogref:MatDialogRef<EditStudentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any) { }
+  studentObject = new Student();
+  constructor(
+    public dialogref: MatDialogRef<EditStudentComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   ngOnInit(): void {
     console.log(this.data);
@@ -22,11 +28,10 @@ studentObject = new Student();
     this.studentObject.Department_ID = this.data.item.Department_ID;
   }
 
-  updateStudent(){
+  updateStudent() {
     this.dialogref.close(this.studentObject);
   }
-  cancel(){
+  cancel() {
     this.dialogref.close(null);
   }
-
 }

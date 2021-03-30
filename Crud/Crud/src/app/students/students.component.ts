@@ -16,7 +16,12 @@ import { EditStudentComponent } from './edit-student/edit-student.component';
 export class StudentsComponent implements OnInit {
   studentList: Student[];
 
-  constructor(public service: StudentListService, private router: Router, private Toastr:ToastrService,private dialog:MatDialog) {}
+  constructor(
+    public service: StudentListService,
+    private router: Router,
+    private Toastr: ToastrService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.refreshList();
@@ -26,7 +31,7 @@ export class StudentsComponent implements OnInit {
   refreshList() {
     this.service.getStudents().subscribe((result) => {
       this.studentList = result as Student[];
-      
+
       console.log(result);
     });
   }
@@ -36,34 +41,23 @@ export class StudentsComponent implements OnInit {
   }
 
   deleteStudent(id) {
-
     Swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this item',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Delete',
-      cancelButtonText: 'Cancel'
+      cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.value) {
         this.service.deleteStudent(id).subscribe((result) => {
-        this.refreshList();
-        
-      });
-        Swal.fire(
-          'Deleted!',
-          'The student has been deleted',
-          'success'
-        )
-      
+          this.refreshList();
+        });
+        Swal.fire('Deleted!', 'The student has been deleted', 'success');
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Cancelled',
-          'The student data is safe :)',
-          'error'
-        )
+        Swal.fire('Cancelled', 'The student data is safe :)', 'error');
       }
-    })
+    });
 
     // if(confirm('are you sure')){
     //   this.service.deleteStudent(id).subscribe((result) => {
@@ -71,49 +65,38 @@ export class StudentsComponent implements OnInit {
     //     this.Toastr.success('delete successful','this delete');
     //   });
     // }
-    
   }
 
-  editStudent(item){
+  editStudent(item) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.width = '30%';
     dialogConfig.height = 'auto';
-    dialogConfig.data = {item};
-    const dialogref = this.dialog.open(EditStudentComponent,dialogConfig);
+    dialogConfig.data = { item };
+    const dialogref = this.dialog.open(EditStudentComponent, dialogConfig);
 
-dialogref.afterClosed().subscribe((result)=>{
-  if(result != null){
-    this.service.updateStudent(result).subscribe((res)=>{
-      this.refreshList();
+    dialogref.afterClosed().subscribe((result) => {
+      if (result != null) {
+        this.service.updateStudent(result).subscribe((res) => {
+          this.refreshList();
+        });
+      }
     });
-    
   }
 
-})
+  addStudent() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.width = '30%';
+    dialogConfig.height = 'auto';
+    const dialogref = this.dialog.open(AddStudentComponent, dialogConfig);
 
+    dialogref.afterClosed().subscribe((result) => {
+      if (result != null) {
+        this.service.postStudent(result).subscribe((res) => {
+          this.refreshList();
+        });
+      }
+    });
   }
-
-addStudent(){
-
-  const dialogConfig = new MatDialogConfig();
-  dialogConfig.disableClose = false;
-  dialogConfig.width = '30%';
-  dialogConfig.height = 'auto';
-  const dialogref = this.dialog.open(AddStudentComponent,dialogConfig);
-
-  dialogref.afterClosed().subscribe((result)=>{
-    if(result != null){
-      this.service.postStudent(result).subscribe((res)=>{
-        this.refreshList();
-      });
-      
-    }
-  
-  })
-
-
-}
-
-
 }
